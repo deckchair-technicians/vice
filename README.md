@@ -19,6 +19,7 @@ See [clojars](https://clojars.org/repo/savagematt/vice)
 (vice.coerce/validate 
    {:a 123}
    {:a (vice.coerce/with-coercion str s/Str)})
+; => {:a "123"}
 ```
 
 ### Midje checkers. 
