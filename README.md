@@ -2,7 +2,7 @@
 
 Useful extensions to [Prismatic schema](https://github.com/Prismatic/schema).
 
- - `vice.coercions` add coercions to individual schema using `(with-coercion func schema)`. Validate using `vice.coercions/validate`
+ - `vice.coerce` add coercions to individual schema using `(with-coercion func schema)`. Validate using `vice.coerce/validate`
  - `vice.valuetypes` common schemas for dates, numbers, etc. including coercions from strings. Useful for transforming json.
  - `vice.schemas` contains `between`, `conditional-on-key`, `fail`, `is-not`, `in-any-order`, `in-order`
  - `vice.midje` use schemas as [Midje](https://github.com/marick/Midje) checkers. `fail`, `is-not`, `in-any-order`, `in-order` are useful here.
