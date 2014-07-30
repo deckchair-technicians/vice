@@ -16,7 +16,9 @@ See [clojars](https://clojars.org/repo/savagematt/vice)
 ### Add coercions to schema:
 
 ```clj
-(vice.coerce/validate {:a 123} {:a (vice.coerce/with-coercion str s/Str)})
+(vice.coerce/validate 
+   {:a 123}
+   {:a (vice.coerce/with-coercion str s/Str)})
 ```
 
 ### Midje checkers. 
