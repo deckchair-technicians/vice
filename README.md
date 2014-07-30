@@ -1,6 +1,6 @@
 # vice
 
-Useful extensions to [Prismatic](https://github.com/Prismatic/schema).
+Useful extensions to [Prismatic schema](https://github.com/Prismatic/schema).
 
  - `vice.coercions` add coercions to individual schema using `(with-coercion func schema)`. Validate using `vice.coercions/validate`
  - `vice.valuetypes` common schemas for dates, numbers, etc. including coercions from strings. Useful for transforming json.
