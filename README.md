@@ -58,17 +58,17 @@ Strictness can be turned on and is scoped:
 
 ### Common types with coercions
 
-See `vice.schemas` for full list.
+See `vice.valuetypes` for full list.
 
 ```clj
-(vice.coerce/validate {:a "2014-07-29"} {:a JodaDateMidnight})
+(vice.coerce/validate {:a "2014-07-29"} {:a vice.valuetypes/JodaDateMidnight})
 
 ; NB: UK date format only
-(vice.coerce/validate {:a "29/07/2014"} {:a JodaDateMidnight})
+(vice.coerce/validate {:a "29/07/2014"} {:a vice.valuetypes/JodaDateMidnight})
 
-(vice.coerce/validate {:a "123"} {:a PositiveInteger})
+(vice.coerce/validate {:a "123"} {:a vice.valuetypes/PositiveInteger})
 
-(vice.coerce/validate {} {(s/optional-key :a) GenUuid}) ; => {:a eafa7062-7bb3-4b60-b1ea-ada2dbd283c8}
+(vice.coerce/validate {} {(s/optional-key :a) vice.valuetypes/GenUuid}) ; => {:a eafa7062-7bb3-4b60-b1ea-ada2dbd283c8}
 ```
 
 ## License
