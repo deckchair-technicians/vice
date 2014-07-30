@@ -29,7 +29,7 @@ Using schemas for midje checks provides better error messages and flexibility in
 Non-schema values in maps are treated as `(schema.core/eq x)`
 
 ```clj
-(fact ""
+(fact "matches ok"
    {:a 123}
    => (vice.midje/matches {:a 123})
 ```
@@ -37,7 +37,7 @@ Non-schema values in maps are treated as `(schema.core/eq x)`
 `in-order` and `in-any-order` help with assertions:
 
 ```clj
-(fact ""
+(fact "matches ok"
    [{:a 123} {:a 345} {:a 234}] 
    => (vice.midje/matches (vice.schemas/in-any-order [{:a 123} {:a 234}] :extras-ok true)))
 ```
@@ -46,16 +46,19 @@ Non-schema values in maps are treated as `(schema.core/eq x)`
 Map matching is loose by default:
 
 ```clj
-{:a 123 :not-in-schema 234} => (vice.midje/matches {:a 123})
+(fact "matches even though it has an extra key"
+   {:a 123 :not-in-schema 234} 
+   => (vice.midje/matches {:a 123}))
 
 ```
 
 Strictness can be turned on and is scoped:
 
 ```clj
-{:a {:b 123
-     :not-in-schema 234}} 
-=> (vice.midje/matches (vice.midje/strict {:a {:b Long}}))
+(fact "strictness is scoped"
+   {:a {:b 123
+        :not-in-schema 234}} 
+   => (vice.midje/matches (vice.midje/strict {:a {:b Long}})))
 ; checker will fail because strictness is inherited when checking value of :a
 ```
 
@@ -64,14 +67,26 @@ Strictness can be turned on and is scoped:
 See `vice.valuetypes` for full list.
 
 ```clj
-(vice.coerce/validate {:a "2014-07-29"} {:a vice.valuetypes/JodaDateMidnight})
+(vice.coerce/validate 
+   "2014-07-29"
+   vice.valuetypes/JodaDateMidnight)
+; => (clj-time/date-midnight 2014 7 29)
 
 ; NB: UK date format only
-(vice.coerce/validate {:a "29/07/2014"} {:a vice.valuetypes/JodaDateMidnight})
+(vice.coerce/validate 
+   "29/07/2014"
+   vice.valuetypes/JodaDateMidnight)
+; => (clj-time/date-midnight 2014 7 29)
 
-(vice.coerce/validate {:a "123"} {:a vice.valuetypes/PositiveInteger})
+(vice.coerce/validate 
+   "123"
+   vice.valuetypes/PositiveInteger)
+; => (int 123)
 
-(vice.coerce/validate {} {(s/optional-key :a) vice.valuetypes/GenUuid}) ; => {:a eafa7062-7bb3-4b60-b1ea-ada2dbd283c8}
+(vice.coerce/validate 
+   {} 
+   {(s/optional-key :a) vice.valuetypes/GenUuid}) 
+; => {:a eafa7062-7bb3-4b60-b1ea-ada2dbd283c8}
 ```
 
 ## License
