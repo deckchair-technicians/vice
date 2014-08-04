@@ -17,8 +17,8 @@ See [clojars](https://clojars.org/repo/savagematt/vice)
 
 ```clj
 (vice.coerce/validate 
-   {:a 123}
-   {:a (vice.coerce/with-coercion str s/Str)})
+   {:a (vice.coerce/with-coercion str s/Str)}
+   {:a 123})
 ; => {:a "123"}
 ```
 
@@ -68,24 +68,24 @@ See `vice.valuetypes` for full list.
 
 ```clj
 (vice.coerce/validate 
-   "2014-07-29"
-   vice.valuetypes/JodaDateMidnight)
+   vice.valuetypes/JodaDateMidnight
+   "2014-07-29")
 ; => (clj-time/date-midnight 2014 7 29)
 
 ; NB: UK date format only
-(vice.coerce/validate 
-   "29/07/2014"
-   vice.valuetypes/JodaDateMidnight)
+(vice.coerce/validate
+   vice.valuetypes/JodaDateMidnight 
+   "29/07/2014")
 ; => (clj-time/date-midnight 2014 7 29)
 
 (vice.coerce/validate 
-   "123"
-   vice.valuetypes/PositiveInteger)
+   vice.valuetypes/PositiveInteger
+   "123")
 ; => (int 123)
 
 (vice.coerce/validate 
-   {} 
-   {(s/optional-key :a) vice.valuetypes/GenUuid}) 
+   {(s/optional-key :a) vice.valuetypes/GenUuid}
+   {})
 ; => {:a eafa7062-7bb3-4b60-b1ea-ada2dbd283c8}
 ```
 
