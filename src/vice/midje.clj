@@ -1,5 +1,4 @@
 (ns vice.midje
-  (:import [schema.utils ValidationError])
   (:require [schema
              [core :as s]
              [coerce :as c]
@@ -8,8 +7,8 @@
             [clojure.walk :refer [postwalk]]
             [midje.checking.core :refer [as-data-laden-falsehood]]
             [clojure.pprint :refer [pprint]]
-            [clojure.stacktrace :refer [print-cause-trace]]
-            ))
+            [clojure.stacktrace :refer [print-cause-trace]])
+  (:import [schema.utils ValidationError]))
 
 (defn strict [schema]
   (with-meta schema {:toshtogo.test.midje-schema/strict true}))
