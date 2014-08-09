@@ -8,11 +8,6 @@
              [schemas :refer :all]
              [util :refer :all]]))
 
-(defn loose [m]
-  (if (not (map? m))
-    (throw (IllegalArgumentException. (str "Not a map: " m)))
-    (assoc m s/Any s/Any)))
-
 (deftype FailSchema [expectation]
   s/Schema
   (walker [this]
@@ -73,7 +68,8 @@
   "
   [k key-schema & values-and-schemas]
   (assert (even? (count values-and-schemas)) "Must be an even number of matching values and schemas")
-  (s/both (loose {k key-schema})
+  (s/both {k key-schema
+           s/Any s/Any}
           (apply s/conditional
                  (->> values-and-schemas
                        (partition 2)

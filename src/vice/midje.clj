@@ -11,13 +11,24 @@
   (:import [schema.utils ValidationError]))
 
 (defn strict [schema]
-  (with-meta schema {:toshtogo.test.midje-schema/strict true}))
+  (with-meta schema {::match-mode :strict}))
 
-(defn strict? [schema]
-  (:toshtogo.test.midje-schema/strict (meta schema)))
+(defn loose [schema]
+  (with-meta schema {::match-mode :loose}))
+
+(defn match-mode [schema]
+  (::match-mode (meta schema)))
 
 (defn matcher [schema]
-  (let [strictness-atom (atom nil)
+  (let [strictness-atom (atom false)
+        _ (case (match-mode schema)
+            :strict
+            (reset! strictness-atom true)
+
+            :loose
+            (reset! strictness-atom false)
+
+            nil)
         walk (s/walker
                (cond
                  (and (map? schema)
@@ -60,3 +71,5 @@
 
       (catch Throwable e
         (as-data-laden-falsehood {:notes [(with-out-str (print-cause-trace e))]})))))
+
+(def matches-strict (comp matches strict))
