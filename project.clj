@@ -4,7 +4,8 @@
 
   :url "http://github.com/savagematt/vice"
 
-  :plugins []
+  :plugins [[s3-wagon-private "1.1.2"]
+            [lein-set-version "0.3.0" ]]
 
   :dependencies [[org.clojure/clojure "1.5.1"]
                  [clj-time "0.6.0"]
