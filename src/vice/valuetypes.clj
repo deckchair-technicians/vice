@@ -4,7 +4,8 @@
              [coerce :refer :all]
              [util :refer :all]])
   (:import [org.joda.time DateMidnight DateTime]
-           [schema.core EnumSchema]))
+           [schema.core EnumSchema]
+           [java.net URL]))
 
 (def is-empty (s/pred empty? "should be empty"))
 
@@ -55,5 +56,15 @@
            str
            s/Str))
 
+(def Url (s/both Str
+                 (with-coercion
+                   #(URL. %)
+                   Str)))
+
 (def Iso2LetterCountry #"[A-Z]{2}")
 (def Iso3LetterCurrency #"[A-Z]{3}")
+(def UrlNoTrailingSlash (s/both
+                          Url
+                          (with-coercion
+                            strip-trailing-slash
+                            Url)))

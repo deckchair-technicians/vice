@@ -36,6 +36,9 @@
 (defmethod to-keyword String [x] (string->keyword x))
 (defmethod to-keyword nil [_] nil)
 
+(defn strip-trailing-slash [s]
+  (clojure.string/replace s #"/$" ""))
+
 (def date-formatter (tf/formatter t/utc  "yyyy-MM-dd" "dd/MM/yyyy"))
 
 (defn parse-date [s]
@@ -102,3 +105,4 @@
       (-> x .getClass .isArray)
       (string? x)
       (instance? java.util.Map x)))
+
