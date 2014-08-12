@@ -190,3 +190,18 @@
                                (list (s/explain schema) (str "item " index))
                                (list (s/explain (s/eq schema)) (str "item " index))))
                            schemas))))))
+
+(deftype SortedSchema [comparator schema]
+  s/Schema
+  (walker [this]
+    (let [w (s/subschema-walker schema)]
+      (fn [value]
+        (w (sort-by comparator value)))))
+  (explain [this]
+    (s/explain schema)))
+
+(defn when-sorted
+  ([schema]
+   (when-sorted identity schema))
+  ([comparator schema]
+   (SortedSchema. comparator schema)))
