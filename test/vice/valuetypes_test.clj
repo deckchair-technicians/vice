@@ -10,3 +10,14 @@
 
   (validate UrlNoTrailingSlash "http://localhost")
   => "http://localhost")
+
+(fact "RePattern"
+  (re-seq (validate RePattern "[ace]")
+          "abcde")
+  => ["a" "c" "e"])
+
+(fact "CaseInsensitiveRePattern"
+  (re-seq (validate CaseInsensitiveRePattern "[ace]")
+          "AbcDe")
+  => ["A" "c" "e"])
+

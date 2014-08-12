@@ -5,7 +5,8 @@
              [util :refer :all]])
   (:import [org.joda.time DateMidnight DateTime]
            [schema.core EnumSchema]
-           [java.net URL]))
+           [java.net URL]
+           [java.util.regex Pattern]))
 
 (def is-empty (s/pred empty? "should be empty"))
 
@@ -60,6 +61,14 @@
                  (with-coercion
                    #(URL. %)
                    Str)))
+
+(def RePattern (with-coercion
+                 re-pattern
+                 Pattern))
+
+(def CaseInsensitiveRePattern (with-coercion
+                                #(str "(?i)" %)
+                                RePattern))
 
 (def Iso2LetterCountry #"[A-Z]{2}")
 (def Iso3LetterCurrency #"[A-Z]{3}")
