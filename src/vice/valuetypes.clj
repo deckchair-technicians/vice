@@ -77,3 +77,20 @@
                           (with-coercion
                             strip-trailing-slash
                             Url)))
+
+(defn- arity
+  [f]
+  (-> f class .getDeclaredMethods first .getParameterTypes alength))
+
+(def Function (s/pred fn? "function?"))
+
+; These are not well defined for functions with multiple arities
+
+(def ArityZeroFunction (s/both Function (s/pred #(= 0 (arity %)) "arity zero?")))
+(def NullaryFunction ArityZeroFunction)
+
+(def ArityOneFunction (s/both Function (s/pred #(= 1 (arity %)) "arity one?")))
+(def UnaryFunction ArityOneFunction)
+
+(def ArityTwoFunction (s/both Function (s/pred #(= 2 (arity %)) "arity two?")))
+(def BinaryFunction ArityTwoFunction)
