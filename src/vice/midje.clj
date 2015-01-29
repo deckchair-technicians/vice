@@ -19,20 +19,14 @@
 (defn match-mode [schema]
   (::match-mode (meta schema)))
 
-(defn matcher [schema]
-  (let [strictness-atom (atom false)
-        _ (case (match-mode schema)
-            :strict
-            (reset! strictness-atom true)
+(defn matcher [strictness-atom schema]
+  (when (not (nil? (match-mode schema)))
+    (reset! strictness-atom (match-mode schema)))
 
-            :loose
-            (reset! strictness-atom false)
-
-            nil)
-        walk (s/walker
+  (let [walk (s/walker
                (cond
                  (and (map? schema)
-                      (not @strictness-atom))
+                      (not= :strict @strictness-atom))
                  (assoc schema s/Any s/Any)
 
                  (not (satisfies? s/Schema schema))
@@ -45,7 +39,7 @@
 
 (defn match [root-schema]
   (s/start-walker
-    matcher
+    (partial matcher (atom :loose))
     root-schema))
 
 (defn check [schema v]

@@ -183,7 +183,7 @@
                            (err-conj out ((:walker item-schema) x)))))))))))
 
     (explain [this]
-      (list 'in-any-order
+      (list 'in-order
             (doall
               (map-indexed (fn [schema index]
                              (if (satisfies? s/Schema schema)
