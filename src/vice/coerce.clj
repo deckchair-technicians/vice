@@ -1,6 +1,5 @@
 (ns vice.coerce
   (:require [clojure.walk :refer [postwalk]]
-            [swiss.arrows :refer :all]
 
             [schema
              [coerce :as c]
