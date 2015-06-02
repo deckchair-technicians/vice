@@ -57,9 +57,9 @@
   (let [c (coercer schema)]
     (fn [value]
       (let [r (c value)]
-        (if (u/error? r)
-          (m/error! (u/format* "Value does not match schema: %s" (pr-str r))
-                    {:schema schema :value value :error (u/error-val r)})
+        (if-let [ev (u/error-val r)]
+          (m/error! (u/format* "Value does not match schema: %s" (pr-str ev))
+                    {:schema schema :value value :error ev})
           r)))))
 
 (defn validate
