@@ -54,7 +54,7 @@
                s/Uuid))
 
 (def Str (with-coercion
-           str
+           #(if (nil? %) nil (str %))
            s/Str))
 
 (def Url (s/both Str
