@@ -32,10 +32,14 @@
     (get-coercer schema)
     (c/json-coercion-matcher schema)))
 
-(defn coercer [schema]
+(defn coercer
+  "Returns a function that takes a value and returns either the coerced value,
+   or an ErrorContainer"
+  [schema]
   (c/coercer schema coercion-matcher))
 
 (defn check
+  "Returns nil or error-val"
   [schema value]
   (-> value
       ((coercer schema))
