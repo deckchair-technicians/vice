@@ -6,6 +6,10 @@
              [coerce :refer :all]
              [schemas :refer :all]]))
 
+(fact "always-a-seq"
+  ((coercer (always-a-seq String)) "a") => ["a"]
+  ((coercer (always-a-seq String)) ["a"]) => ["a"])
+
 (fact "in-any-order: too many elements"
   (vm/errors {:a (in-any-order [2 1])}
           {:a [3 1 2 4]})

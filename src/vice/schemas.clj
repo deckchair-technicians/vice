@@ -204,4 +204,7 @@
   ([schema]
    (when-sorted identity schema))
   ([comparator schema]
-   (SortedSchema. comparator schema)))
+     (SortedSchema. comparator schema)))
+
+(defn always-a-seq [s]
+  (with-coercion #(if (sequential? %) % [%]) [s]))
