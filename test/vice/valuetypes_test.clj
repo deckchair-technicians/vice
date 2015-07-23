@@ -12,6 +12,9 @@
   (validate UrlNoTrailingSlash "http://localhost")
   => (URL. "http://localhost"))
 
+(fact "Uri"
+  (validate Uri"http://localhost")
+  => (URI. "http://localhost"))
 
 (fact "RePattern"
   (re-seq (validate RePattern "[ace]")

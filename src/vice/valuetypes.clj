@@ -5,7 +5,7 @@
              [util :refer :all]])
   (:import [org.joda.time DateMidnight DateTime]
            [schema.core EnumSchema]
-           [java.net URL]
+           [java.net URL URI]
            [java.util.regex Pattern]))
 
 (def is-empty (s/pred empty? "should be empty"))
@@ -62,6 +62,10 @@
                    #(URL. %)
                    URL)))
 
+(def Uri (s/both Str
+                 (with-coercion
+                   #(URI. %)
+                   URI)))
 
 (def RePattern (with-coercion
                  re-pattern
