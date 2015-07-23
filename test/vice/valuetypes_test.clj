@@ -2,14 +2,16 @@
   (:require [midje.sweet :refer :all]
             [vice
              [coerce :refer :all]
-             [valuetypes :refer :all]]))
+             [valuetypes :refer :all]])
+  (:import [java.net URL URI]))
 
 (fact "UrlNoTrailingSlash"
   (validate UrlNoTrailingSlash "http://localhost/")
-  => "http://localhost"
+  => (URL. "http://localhost")
 
   (validate UrlNoTrailingSlash "http://localhost")
-  => "http://localhost")
+  => (URL. "http://localhost"))
+
 
 (fact "RePattern"
   (re-seq (validate RePattern "[ace]")

@@ -60,7 +60,8 @@
 (def Url (s/both Str
                  (with-coercion
                    #(URL. %)
-                   Str)))
+                   URL)))
+
 
 (def RePattern (with-coercion
                  re-pattern
@@ -75,7 +76,7 @@
 (def UrlNoTrailingSlash (s/both
                           Url
                           (with-coercion
-                            strip-trailing-slash
+                            #(strip-trailing-slash (str %))
                             Url)))
 
 (defn- arity
