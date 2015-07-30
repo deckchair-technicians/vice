@@ -5,7 +5,6 @@
              [utils :as u]
              [macros :as m]]
             [clojure.walk :refer [postwalk]]
-            [midje.checking.core :refer [as-data-laden-falsehood]]
             [clojure.pprint :refer [pprint]]
             [clojure.stacktrace :refer [print-cause-trace]])
   (:import [schema.utils ValidationError]))
@@ -54,6 +53,12 @@
                 (u/validation-error-explain e)
                 e))
             (check schema x)))
+
+
+(defn as-data-laden-falsehood
+  "Copied across from Midje source so you don't need to add Midje as a prod dependency"
+  [value]
+  (vary-meta value assoc :midje/data-laden-falsehood true))
 
 (defn matches [schema]
   (assert schema "No schema provided")
