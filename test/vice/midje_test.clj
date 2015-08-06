@@ -14,7 +14,6 @@
   {:a 123 :not-in-schema 234}
   => (matches (is-not (strict {:a Long}))))
 
-
 (fact "strictness cascades down"
   {:strict
    {:still-strict 123

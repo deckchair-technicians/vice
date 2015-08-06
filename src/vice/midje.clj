@@ -7,9 +7,7 @@
             [clojure.walk :refer [postwalk]]
             [clojure.pprint :refer [pprint]]
             [clojure.stacktrace :refer [print-cause-trace]])
-  (:import [schema.utils ValidationError]
-           [schema.core MapEntry]
-           [clojure.lang PersistentArrayMap]))
+  (:import [schema.utils ValidationError]))
 
 (defn strict [schema]
   (with-meta schema {::match-mode :strict}))
@@ -39,7 +37,7 @@
 
   (let [walk (s/walker
                (cond
-                 (instance? PersistentArrayMap schema)
+                 (and (map? schema) (not (record? schema)))
                  (fix-map-schema strictness-atom schema)
 
                  (not (satisfies? s/Schema schema))
