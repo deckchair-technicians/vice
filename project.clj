@@ -1,4 +1,4 @@
-(defproject savagematt/vice "0.9-SNAPSHOT"
+(defproject savagematt/vice "0.9"
 
   :description "Prismatic schema extensions"
 
