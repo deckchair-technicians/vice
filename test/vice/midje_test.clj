@@ -4,6 +4,9 @@
              [midje :refer :all]
              [schemas :refer :all]]))
 
+(fact "matches automatically turns concrete values into EqSchema"
+  {:a 123 } => (matches {:a 123}))
+
 (fact "map schemas match loosely by default"
   {:a 123 :b 234} => (matches {:a Long}))
 
@@ -25,4 +28,5 @@
   => (matches (strict {:strict
                        (loose {:loose Long})})))
 
-
+(fact "matches automatically turns non-keyword keys into (specific-key k)"
+  {"a" 123 } => (matches {"a" 123}))

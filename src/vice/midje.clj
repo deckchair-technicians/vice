@@ -7,7 +7,9 @@
             [clojure.walk :refer [postwalk]]
             [clojure.pprint :refer [pprint]]
             [clojure.stacktrace :refer [print-cause-trace]])
-  (:import [schema.utils ValidationError]))
+  (:import [schema.utils ValidationError]
+           [schema.core MapEntry]
+           [clojure.lang PersistentArrayMap]))
 
 (defn strict [schema]
   (with-meta schema {::match-mode :strict}))
@@ -18,15 +20,27 @@
 (defn match-mode [schema]
   (::match-mode (meta schema)))
 
+(defn map-keys [m f]
+  (into {} (map (fn [[k v]] [(f k) v]) m)))
+
+(defn fix-map-schema [strictness-atom schema]
+  (cond-> schema
+    true
+    (map-keys #(if (or (s/specific-key? %) (satisfies? s/Schema %))
+                %
+                (s/required-key %)))
+
+    (not= :strict @strictness-atom)
+    (assoc s/Any s/Any)))
+
 (defn matcher [strictness-atom schema]
   (when (not (nil? (match-mode schema)))
     (reset! strictness-atom (match-mode schema)))
 
   (let [walk (s/walker
                (cond
-                 (and (map? schema)
-                      (not= :strict @strictness-atom))
-                 (assoc schema s/Any s/Any)
+                 (instance? PersistentArrayMap schema)
+                 (fix-map-schema strictness-atom schema)
 
                  (not (satisfies? s/Schema schema))
                  (s/eq schema)
