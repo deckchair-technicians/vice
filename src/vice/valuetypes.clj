@@ -57,15 +57,23 @@
            #(if (nil? %) nil (str %))
            s/Str))
 
-(def Url (s/both Str
-                 (with-coercion
-                   #(URL. %)
-                   URL)))
+(defmulti url class)
+(defmethod url URL [x] x)
+(defmethod url URI [x] (.toURL x))
+(defmethod url String [x] (URL. x))
 
-(def Uri (s/both Str
-                 (with-coercion
-                   #(URI. %)
-                   URI)))
+(def Url (with-coercion
+           #(url %)
+           URL))
+
+(defmulti uri class)
+(defmethod uri URI [x] x)
+(defmethod uri URL [x] (.toURI x))
+(defmethod uri String [x] (URI. x))
+
+(def Uri (with-coercion
+           #(uri %)
+           URI))
 
 (def RePattern (with-coercion
                  re-pattern
