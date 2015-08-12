@@ -16,6 +16,10 @@
   (validate Uri"http://localhost")
   => (URI. "http://localhost"))
 
+(facts "Iso currency"
+  (validate Iso3LetterCurrency "AAA") => "AAA"
+  (validate Iso3LetterCurrency "AAAB") => (throws Exception))
+
 (fact "RePattern"
   (re-seq (validate RePattern "[ace]")
           "abcde")
@@ -25,4 +29,3 @@
   (re-seq (validate CaseInsensitiveRePattern "[ace]")
           "AbcDe")
   => ["A" "c" "e"])
-

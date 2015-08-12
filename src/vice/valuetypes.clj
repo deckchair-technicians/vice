@@ -83,8 +83,8 @@
                                 #(str "(?i)" %)
                                 RePattern))
 
-(def Iso2LetterCountry #"[A-Z]{2}")
-(def Iso3LetterCurrency #"[A-Z]{3}")
+(def Iso2LetterCountry #"^[A-Z]{2}$")
+(def Iso3LetterCurrency #"^[A-Z]{3}$")
 (def UrlNoTrailingSlash (s/both
                           Url
                           (with-coercion
