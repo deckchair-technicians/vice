@@ -57,43 +57,43 @@
                                        "yyyy-MM-dd'THH:mm"
                                        "yyyy-MM-dd'THH:mm:ss"))
 
-(defn parse-any-date-time [s]
-  (when s
-    (if (instance? DateTime s)
-      s
-      (tf/parse date-time-formatter s))))
+(defmulti coerce-date-midnight class)
+(defmethod coerce-date-midnight DateMidnight [d] d)
+(defmethod coerce-date-midnight DateTime [d] (DateMidnight. d))
+(defmethod coerce-date-midnight String [s] (parse-date s))
+(defmethod coerce-date-midnight nil [_] nil)
 
-(defmulti date-midnight class)
-(defmethod date-midnight DateMidnight [d] d)
-(defmethod date-midnight DateTime [d] (DateMidnight. d))
-(defmethod date-midnight String [s] (parse-date s))
-(defmethod date-midnight nil [_] nil)
+(defmulti coerce-date-time class)
+(defmethod coerce-date-time DateTime [d] d)
+(defmethod coerce-date-time String [s] (parse-date-time s))
+(defmethod coerce-date-time nil [_] nil)
 
-(defmulti date-time class)
-(defmethod date-time DateTime [d] d)
-(defmethod date-time String [s] (parse-date-time s))
-(defmethod date-time nil [_] nil)
+(defmulti coerce-integer class)
+(defmethod coerce-integer int [i] i)
+(defmethod coerce-integer Integer [i] i)
+(defmethod coerce-integer Long [n] (int n))
+(defmethod coerce-integer String [s] (Integer/parseInt s))
+(defmethod coerce-integer nil [_] nil)
 
-(defmulti integer class)
-(defmethod integer int [i] i)
-(defmethod integer Integer [i] i)
-(defmethod integer Long [n] (int n))
-(defmethod integer String [s] (Integer/parseInt s))
-(defmethod integer nil [_] nil)
+(defmulti coerce-double "Null-safe. Will parse strings to Double. Will coerce other number types to double" class)
+(defmethod coerce-double Double [n] n)
+(defmethod coerce-double Number [n] (double n))
+(defmethod coerce-double String [s] (Double/parseDouble s))
+(defmethod coerce-double nil [_] nil)
 
-(defmulti bigdecimal
+(defmulti coerce-bigdecimal
           "Only accepts nil, int, long, string and BigDecimal."
           class)
-(defmethod bigdecimal BigDecimal [d] d)
-(defmethod bigdecimal Long [s] (BigDecimal. s))
-(defmethod bigdecimal Integer [s] (BigDecimal. s))
-(defmethod bigdecimal String [s] (BigDecimal. s))
-(defmethod bigdecimal nil [_] nil)
+(defmethod coerce-bigdecimal BigDecimal [d] d)
+(defmethod coerce-bigdecimal Long [s] (BigDecimal. s))
+(defmethod coerce-bigdecimal Integer [s] (BigDecimal. s))
+(defmethod coerce-bigdecimal String [s] (BigDecimal. s))
+(defmethod coerce-bigdecimal nil [_] nil)
 
-(defmulti number "Null-safe. Will coerce strings to BigDecimal" class)
-(defmethod number Number [n] n)
-(defmethod number String [s] (BigDecimal. s))
-(defmethod number nil [_] nil)
+(defmulti coerce-number "Null-safe. Will coerce strings to BigDecimal" class)
+(defmethod coerce-number Number [n] n)
+(defmethod coerce-number String [s] (BigDecimal. s))
+(defmethod coerce-number nil [_] nil)
 
 (defn seqable?
   "Returns true if (seq x) will succeed, false otherwise."

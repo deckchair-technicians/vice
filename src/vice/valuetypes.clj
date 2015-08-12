@@ -16,30 +16,34 @@
     (EnumSchema. (set vs))))
 
 (def JodaDateMidnight (with-coercion
-                        date-midnight
+                        coerce-date-midnight
                         DateMidnight))
 
 (def JodaDateTime (with-coercion
-                    date-time
+                    coerce-date-time
                     DateTime))
 
 (def Positive (s/pred #(>= % 0M) "positive number"))
 
 (def Int (with-coercion
-           integer
+           coerce-integer
            Integer))
 
 (def PositiveInteger (s/both Int Positive))
 
 (def Num (with-coercion
-           number
+           coerce-number
            s/Num))
+
+(def Doub (with-coercion
+              coerce-double
+              Double))
 
 (def PositiveNum (s/both Num Positive))
 
 (def BigDec
   (with-coercion
-    bigdecimal
+    coerce-bigdecimal
     BigDecimal))
 
 (def PositiveBigDec (s/both BigDec Positive))

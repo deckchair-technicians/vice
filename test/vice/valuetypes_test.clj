@@ -2,7 +2,7 @@
   (:require [midje.sweet :refer :all]
             [vice
              [coerce :refer :all]
-             [valuetypes :refer :all]])
+             [valuetypes :refer :all :as v]])
   (:import [java.net URL URI]))
 
 (fact "UrlNoTrailingSlash"
@@ -19,6 +19,19 @@
 (facts "Iso currency"
   (validate Iso3LetterCurrency "AAA") => "AAA"
   (validate Iso3LetterCurrency "AAAB") => (throws Exception))
+
+(fact "Double"
+  (validate v/Doub "0.05")
+  => 0.05
+
+  (validate v/Doub 0.05M)
+  => 0.05
+
+  (validate v/Doub 0.05)
+  => 0.05
+
+  (validate v/Doub 1)
+  => 1.0)
 
 (fact "RePattern"
   (re-seq (validate RePattern "[ace]")
