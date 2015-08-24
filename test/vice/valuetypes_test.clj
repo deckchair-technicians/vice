@@ -3,7 +3,9 @@
             [vice
              [coerce :refer :all]
              [valuetypes :refer :all :as v]])
-  (:import [java.net URL URI]))
+  (:import [java.net URL URI]
+           [clojure.lang ExceptionInfo]
+           [java.math RoundingMode]))
 
 (fact "UrlNoTrailingSlash"
   (validate UrlNoTrailingSlash "http://localhost/")
@@ -32,6 +34,26 @@
 
   (validate v/Doub 1)
   => 1.0)
+
+(fact "BigDec"
+  (validate v/BigDec "0.05")
+  => 0.05M
+
+  (validate v/BigDec 0.05M)
+  => 0.05M
+
+  (validate v/BigDec 0.05)
+  => 0.05M
+
+  (validate v/BigDec (/ 1 3))
+  => (throws ExceptionInfo)
+
+  (with-precision 10 RoundingMode/HALF_UP
+    (validate v/BigDec (/ 1 3))
+    => (bigdec (/ 1 3)))
+
+  (validate v/BigDec 1)
+  => 1.0M)
 
 (fact "RePattern"
   (re-seq (validate RePattern "[ace]")

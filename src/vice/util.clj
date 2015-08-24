@@ -82,15 +82,13 @@
 (defmethod coerce-double nil [_] nil)
 
 (defmulti coerce-bigdecimal
-          "Only accepts nil, int, long, string and BigDecimal."
+          "nil-safe"
           class)
 (defmethod coerce-bigdecimal BigDecimal [d] d)
-(defmethod coerce-bigdecimal Long [s] (BigDecimal. s))
-(defmethod coerce-bigdecimal Integer [s] (BigDecimal. s))
-(defmethod coerce-bigdecimal String [s] (BigDecimal. s))
 (defmethod coerce-bigdecimal nil [_] nil)
+(defmethod coerce-bigdecimal :default [s] (bigdec s))
 
-(defmulti coerce-number "Null-safe. Will coerce strings to BigDecimal" class)
+(defmulti coerce-number "nil-safe. Will coerce strings to BigDecimal" class)
 (defmethod coerce-number Number [n] n)
 (defmethod coerce-number String [s] (BigDecimal. s))
 (defmethod coerce-number nil [_] nil)
