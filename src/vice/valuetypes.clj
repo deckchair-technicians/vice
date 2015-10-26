@@ -39,6 +39,18 @@
               coerce-double
               Double))
 
+(defmulti ->boolean class)
+(defmethod ->boolean Boolean [x] x)
+(defmethod ->boolean String [x]
+  (case x
+    "true" true
+    "false" false))
+
+(def Bool
+  (with-coercion
+    ->boolean
+    Boolean))
+
 (def PositiveNum (s/both Num Positive))
 
 (def BigDec
