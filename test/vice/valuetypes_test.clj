@@ -64,3 +64,19 @@
   (re-seq (validate CaseInsensitiveRePattern "[ace]")
           "AbcDe")
   => ["A" "c" "e"])
+
+(fact "Boolean"
+  (validate v/Bool true)
+  => true
+
+  (validate v/Bool false)
+  => false
+
+  (validate v/Bool "true")
+  => true
+
+  (validate v/Bool "false")
+  => false
+
+  (validate v/Bool "foobar")
+  => (throws ExceptionInfo))
