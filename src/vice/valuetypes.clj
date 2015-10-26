@@ -48,7 +48,7 @@
 
 (def Bool
   (with-coercion
-    #(->boolean %)
+    ->boolean
     Boolean))
 
 (def PositiveNum (s/both Num Positive))
